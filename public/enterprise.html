@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Enterprise Workspace Solutions | WorkX Lahore</title>
+<meta name="description" content="Customized layouts, design-your-own space, solutions for teams of 50+, franchising and landlord partnerships, flexible enterprise workspace solutions from WorkX, Lahore.">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://workx.pk/enterprise.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="WorkX Coworking">
+<meta property="og:title" content="Enterprise Workspace Solutions | WorkX Lahore">
+<meta property="og:description" content="Flexible spaces and solutions built around your business: customized layouts, teams of 50+, franchising and landlord partnerships.">
+<meta property="og:url" content="https://workx.pk/enterprise.html">
+<meta property="og:image" content="https://workx.pk/assets/web/partnership.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="favicon.png" type="image/png">
+<link rel="apple-touch-icon" href="favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=Inter:wght@400;500;600&family=Plus+Jakarta+Sans:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/site.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://workx.pk/" },
+    { "@type": "ListItem", "position": 2, "name": "Ecosystem", "item": "https://workx.pk/index.html#ecosystem" },
+    { "@type": "ListItem", "position": 3, "name": "Enterprise", "item": "https://workx.pk/enterprise.html" }
+  ]
+}
+</script>
+<style>
+/* Local styles for this Ecosystem detail page only (Founders/Startups/Enterprise) */
+.offer-list{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+@media(max-width:760px){.offer-list{grid-template-columns:1fr;}}
+.offer-item{background:#fff;border:1px solid var(--border);border-radius:var(--radius-lg);padding:22px 24px;display:flex;gap:14px;transition:border-color .25s,transform .25s;}
+.offer-item:hover{border-color:var(--green);transform:translateY(-3px);}
+.offer-item-icon{width:40px;height:40px;border-radius:11px;background:var(--bg);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;color:var(--green);flex-shrink:0;}
+.offer-item-icon svg{width:19px;height:19px;}
+.offer-item h3{font-family:var(--font-display);font-weight:800;font-size:16px;margin-bottom:5px;color:var(--dark);}
+.offer-item p{color:var(--muted);font-size:13.5px;line-height:1.55;}
+
+.eco-gallery{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+@media(max-width:700px){.eco-gallery{grid-template-columns:1fr;}}
+.eco-gallery-item{border-radius:var(--radius-lg);overflow:hidden;aspect-ratio:4/3;box-shadow:0 20px 40px -24px rgba(15,23,42,.2);}
+.eco-gallery-item img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .5s ease;}
+.eco-gallery-item:hover img{transform:scale(1.05);}
+
+.eco-highlight-band{background:var(--ink);border-radius:var(--radius-lg);padding:36px 32px;text-align:center;position:relative;overflow:hidden;}
+.eco-highlight-band::before{content:"";position:absolute;top:-35%;left:50%;transform:translateX(-50%);width:640px;height:640px;border-radius:50%;background:radial-gradient(circle,rgba(0,158,74,.25),transparent 70%);}
+.eco-highlight-band p{position:relative;z-index:1;color:#fff;font-family:var(--font-display);font-weight:800;font-size:clamp(18px,2.2vw,24px);line-height:1.4;max-width:680px;margin:0 auto;}
+
+.eco-pillars-nav{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+@media(max-width:760px){.eco-pillars-nav{grid-template-columns:1fr;}}
+.eco-pillar-card{background:#fff;border:1.5px solid var(--border);border-radius:var(--radius-lg);padding:22px;text-align:center;transition:border-color .25s,transform .25s;display:block;}
+.eco-pillar-card:hover{border-color:var(--green);transform:translateY(-4px);}
+.eco-pillar-card.current{border-color:var(--ink);background:var(--bg);}
+.eco-pillar-card .tag{display:inline-block;font-family:var(--font-util);font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--green-dark);margin-bottom:8px;}
+.eco-pillar-card h4{font-family:var(--font-display);font-weight:800;font-size:16px;margin-bottom:6px;color:var(--dark);}
+.eco-pillar-card p{color:var(--muted);font-size:13px;line-height:1.5;}
+</style>
+</head>
+<body>
+
+<header id="siteHeader">
+  <div class="container nav-inner">
+    <a class="logo" href="index.html#home">
+      <img src="assets/01%20Workx%20Logo/workx-logo-black.png" alt="WorkX coworking space logo" width="309" height="70">
+    </a>
+    <nav class="nav-links" id="navLinksEl">
+      <a href="about.html">About Us</a>
+      <a href="pricing.html">Pricing</a>
+      <a href="blogs.html">Blogs</a>
+      <a href="landlords.html">Landlords</a>
+      <div class="nav-drop" id="ecoDrop">
+        <a href="index.html#ecosystem" class="nav-drop-link">Ecosystem</a>
+        <button type="button" class="nav-drop-caret-btn" id="ecoDropBtn" aria-expanded="false" aria-controls="ecoDropPanel" aria-label="Toggle Ecosystem pages">
+          <svg class="nav-caret" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="nav-drop-panel" id="ecoDropPanel">
+          <a href="founders.html">Founders</a>
+          <a href="startups.html">Startup</a>
+          <a href="enterprise.html">Enterprise</a>
+        </div>
+      </div>
+      <a href="index.html#contact">Contact</a>
+    </nav>
+    <div class="nav-cta">
+      <a class="btn btn-primary btn-sm" href="index.html#home">Enquire now</a>
+    </div>
+    <button type="button" class="nav-burger" id="navBurger" aria-expanded="false" aria-controls="navLinksEl" aria-label="Open menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<nav class="breadcrumb container" aria-label="Breadcrumb">
+  <ol>
+    <li><a href="index.html">Home</a></li>
+    <li><a href="index.html#ecosystem">Ecosystem</a></li>
+    <li aria-current="page"><span>Enterprise</span></li>
+  </ol>
+</nav>
+
+<!-- HERO -->
+<section class="section lh-hero">
+  <div class="container">
+    <div class="lh-hero-grid">
+      <div class="reveal">
+        <div class="eyebrow">03 Enterprise Partnerships</div>
+        <h1>Flexible spaces and solutions built around your business.</h1>
+      </div>
+      <div class="lh-hero-media reveal">
+        <img src="assets/Community%20Pictures/DSC08850.JPG" alt="WorkX enterprise partnership signing in Lahore" width="1600" height="2400">
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WHAT'S INCLUDED -->
+<section class="section" style="padding:20px 0 64px;">
+  <div class="container">
+    <div class="section-head reveal" style="margin-bottom:36px;">
+      <div class="eyebrow">What's Included</div>
+      <h2>Solutions built for scale</h2>
+      <p>For established businesses and larger teams, WorkX builds around how your business already operates.</p>
+    </div>
+    <div class="offer-list reveal">
+
+      <div class="offer-item">
+        <div class="offer-item-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg></div>
+        <div>
+          <h3>Customized layouts</h3>
+          <p>We design your floor plan around how your team actually works, not a onesizefitsall layout.</p>
+        </div>
+      </div>
+
+      <div class="offer-item">
+        <div class="offer-item-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg></div>
+        <div>
+          <h3>Design your own space</h3>
+          <p>Bring your own brand identity into the space, from signage to furniture choices, within a WorkXmanaged environment.</p>
+        </div>
+      </div>
+
+      <div class="offer-item">
+        <div class="offer-item-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="7" cy="7" r="3"/><circle cx="17" cy="7" r="3"/><path d="M2 21c0-3.5 2.5-6 5-6s5 2.5 5 6M12 21c0-3.5 2.5-6 5-6s5 2.5 5 6"/></svg></div>
+        <div>
+          <h3>Solutions for teams of 50+</h3>
+          <p>Dedicated floors and infrastructure built for larger teams, with the same amenities and support as the rest of WorkX, at scale.</p>
+        </div>
+      </div>
+
+      <div class="offer-item">
+        <div class="offer-item-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s7-7.5 7-13a7 7 0 0 0-14 0c0 5.5 7 13 7 13Z"/><circle cx="12" cy="9" r="2.5"/></svg></div>
+        <div>
+          <h3>Franchising opportunities</h3>
+          <p>Bring the WorkX model to a new location through a structured franchising partnership.</p>
+        </div>
+      </div>
+
+      <div class="offer-item">
+        <div class="offer-item-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="12" r="6"/><circle cx="15" cy="12" r="6"/></svg></div>
+        <div>
+          <h3>Landlord partnerships</h3>
+          <p>Own a commercial property? Partner with WorkX to turn it into a managed, revenuegenerating workspace. See our <a href="landlords.html" style="color:var(--green-dark);font-weight:600;">landlord partnerships</a> page for details.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- GALLERY -->
+<section class="section" style="background:#fff;padding:20px 0 64px;">
+  <div class="container">
+    <div class="eco-gallery reveal">
+      <div class="eco-gallery-item">
+        <img src="assets/web/lounge.jpg" alt="Premium lounge space available for enterprise teams at WorkX" width="1000" height="666" loading="lazy">
+      </div>
+      <div class="eco-gallery-item">
+        <img src="assets/Community%20Pictures/DSC08995.JPG" alt="A large, fully staffed enterprise floor at WorkX built for scale" width="1600" height="1066" loading="lazy">
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HIGHLIGHT -->
+<section class="section" style="padding:20px 0 64px;">
+  <div class="container">
+    <div class="eco-highlight-band reveal">
+      <p>Transform underutilized commercial space into highperforming work environments.</p>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="section" style="background:#fff;padding:20px 0 64px;">
+  <div class="container">
+    <div class="eco-cta reveal" style="margin-top:0;">
+      <h2 style="margin-bottom:16px;">Ready to design your enterprise floor?</h2>
+      <p style="color:var(--muted);margin-bottom:28px;max-width:520px;margin-left:auto;margin-right:auto;">Tell us about your team size and requirements, and we'll put together a custom proposal.</p>
+      <div style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap;">
+        <a href="index.html#contact" class="btn btn-primary">Talk to our team</a>
+        <a href="landlords.html" class="btn btn-outline">Explore partnerships</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ECOSYSTEM CROSS-LINKS -->
+<section class="section" style="background:#fff;padding:20px 0 64px;">
+  <div class="container">
+    <div class="section-head center reveal" style="margin-bottom:32px;max-width:820px;">
+      <div class="eyebrow" style="justify-content:center;">The WorkX Ecosystem</div>
+      <p class="force-oneline">Wherever your business is today, there's a WorkX path built for what comes next.</p>
+    </div>
+    <div class="eco-pillars-nav reveal">
+      <a class="eco-pillar-card" href="founders.html">
+        <span class="tag">01 · Start</span>
+        <h4>Founders</h4>
+        <p>Coworking spaces, private rooms and everyday amenities to help you start and build.</p>
+      </a>
+      <a class="eco-pillar-card" href="startups.html">
+        <span class="tag">02 · Grow</span>
+        <h4>Startups</h4>
+        <p>Marketing, HR, legal and investor connections built around your growth.</p>
+      </a>
+      <a class="eco-pillar-card current" href="enterprise.html">
+        <span class="tag">03 · Scale</span>
+        <h4>Enterprise</h4>
+        <p>Custom layouts, scale solutions and landlord partnerships for bigger teams.</p>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="container">
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <a class="logo" href="index.html#home"><img src="assets/01%20Workx%20Logo/workx-logo-white.png" alt="WorkX coworking space logo" width="1419" height="333"></a>
+        <p>Premium coworking spaces designed for ambitious teams, in Johar Town, Lahore.</p>
+        <div class="newsletter">
+          <input type="email" placeholder="Your email">
+          <button class="btn btn-primary btn-sm" type="button">Join</button>
+        </div>
+        <div class="social-row">
+          <a href="https://www.linkedin.com/company/workx-coworking/" target="_blank" rel="noopener" aria-label="WorkX on LinkedIn"><svg viewBox="0 0 448 512"><path d="M416 32H31.9C14.3 32 0 46.5 0 64.3v383.4C0 465.5 14.3 480 31.9 480H416c17.6 0 32-14.5 32-32.3V64.3c0-17.8-14.4-32.3-32-32.3zM135.4 416H69V202.2h66.5V416zm-33.2-243c-21.3 0-38.5-17.3-38.5-38.5S80.9 96 102.2 96c21.2 0 38.5 17.3 38.5 38.5 0 21.3-17.2 38.5-38.5 38.5zm282.1 243h-66.4V312c0-24.8-.5-56.7-34.5-56.7-34.6 0-39.9 27-39.9 54.9V416h-66.4V202.2h63.7v29.2h.9c8.9-16.8 30.6-34.5 62.9-34.5 67.2 0 79.7 44.3 79.7 101.9V416z"/></svg></a><a href="#" aria-label="WorkX on X (Twitter)">𝕏</a><a href="https://www.instagram.com/workx.pk/" target="_blank" rel="noopener" aria-label="WorkX on Instagram"><svg viewBox="0 0 448 512"><path d="M224,202.66A53.34,53.34,0,1,0,277.36,256,53.38,53.38,0,0,0,224,202.66Zm124.71-41a54,54,0,0,0-30.41-30.41c-21-8.29-71-6.43-94.3-6.43s-73.25-1.93-94.31,6.43a54,54,0,0,0-30.41,30.41c-8.28,21-6.43,71.05-6.43,94.33S91,329.26,99.32,350.33a54,54,0,0,0,30.41,30.41c21,8.29,71,6.43,94.31,6.43s73.24,1.93,94.3-6.43a54,54,0,0,0,30.41-30.41c8.35-21,6.43-71.05,6.43-94.33S357.1,182.74,348.75,161.67ZM224,338a82,82,0,1,1,82-82A81.9,81.9,0,0,1,224,338Zm85.38-148.3a19.14,19.14,0,1,1,19.13-19.14A19.1,19.1,0,0,1,309.42,189.74ZM400,32H48A48,48,0,0,0,0,80V432a48,48,0,0,0,48,48H400a48,48,0,0,0,48-48V80A48,48,0,0,0,400,32ZM382.88,322c-1.29,25.63-7.14,48.34-25.85,67s-41.4,24.63-67,25.85c-26.41,1.49-105.59,1.49-132,0-25.63-1.29-48.26-7.15-67-25.85s-24.63-41.42-25.85-67c-1.49-26.42-1.49-105.61,0-132,1.29-25.63,7.07-48.34,25.85-67s41.47-24.56,67-25.78c26.41-1.49,105.59-1.49,132,0,25.63,1.29,48.33,7.15,67,25.85s24.63,41.42,25.85,67.05C384.37,216.44,384.37,295.56,382.88,322Z"/></svg></a><a href="https://www.facebook.com/workXCoworking" target="_blank" rel="noopener" aria-label="WorkX on Facebook"><svg viewBox="0 0 448 512"><path d="M400 32H48A48 48 0 0 0 0 80v352a48 48 0 0 0 48 48h137.25V327.69h-63V256h63v-54.64c0-62.15 37-96.48 93.67-96.48 27.14 0 55.52 4.84 55.52 4.84v61h-31.27c-30.81 0-40.42 19.12-40.42 38.73V256h68.78l-11 71.69h-57.78V480H400a48 48 0 0 0 48-48V80a48 48 0 0 0-48-48z"/></svg></a>
+        </div>
+      </div>
+      <div class="foot-col">
+        <h5>Company</h5>
+        <ul><li><a href="about.html">About Us</a></li><li><a href="pricing.html">Pricing</a></li><li><a href="faq.html">FAQ</a></li><li><a href="reviews.html">Reviews</a></li></ul>
+      </div>
+      <div class="foot-col">
+        <h5>Quick links</h5>
+        <ul><li><a href="blogs.html">Blogs</a></li><li><a href="solutions.html">Solutions</a></li><li><a href="landlords.html">Landlords</a></li></ul>
+      </div>
+      <div class="foot-col">
+        <h5>Support</h5>
+        <ul>
+          <li><a href="index.html#contact"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16v12H7l-3 3V4Z"/></svg>Contact us</a></li>
+          <li><a href="mailto:info@workx.pk"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16v16H4z"/><path d="m4 6 8 7 8-7"/></svg>info@workx.pk</a></li>
+          <li><a href="tel:+923218845311"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.362 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.338 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>+92 321 8845311</a></li>
+          <li><a href="index.html#contact"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><path d="M3 13h18"/></svg>Corporate sales</a></li>
+        </ul>
+      </div>
+      <div class="foot-col">
+        <h5>Location</h5>
+        <ul><li><a href="https://www.google.com/maps/search/?api=1&query=336%2C+G3+Main+Blvd%2C+Block+G3+Block+G+3+Phase+2%2C+Johar+Town%2C+Lahore%2C+54782%2C+Pakistan" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s7-7.5 7-13a7 7 0 0 0-14 0c0 5.5 7 13 7 13Z"/><circle cx="12" cy="9" r="2.5"/></svg>336, G3 Main Blvd, Block G3 Block G 3 Phase 2, Johar Town, Lahore, 54782, Pakistan</a></li></ul>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>© 2026 WorkX. All rights reserved.</span>
+      <span><a href="privacy-policy.html">Privacy policy</a> · <a href="terms-of-service.html">Terms of service</a></span>
+    </div>
+  </div>
+</footer>
+
+<div class="toast-wrap" id="toastWrap"></div>
+
+<!-- Login / Signup modal -->
+<div class="modal-overlay" id="loginModal">
+  <div class="modal-box">
+    <div class="modal-close-x" data-close="loginModal">✕</div>
+    <h3 style="margin-bottom:18px;">Welcome to WorkX</h3>
+    <div class="login-tabs">
+      <button class="active" data-tab="login" type="button">Log in</button>
+      <button data-tab="signup" type="button">Sign up</button>
+    </div>
+    <form id="authForm">
+      <div class="wfield" id="authNameField" style="display:none;"><label>Full name</label><input type="text" id="authName" placeholder="Full name"></div>
+      <div class="wfield"><label>Email</label><input type="email" id="authEmail" placeholder="you@company.com" required></div>
+      <div class="wfield"><label>Password</label><input type="password" id="authPassword" placeholder="••••••••" required></div>
+      <div class="wfield" id="authRememberField"><label style="display:flex;align-items:center;gap:8px;font-weight:500;text-transform:none;letter-spacing:0;cursor:pointer;"><input type="checkbox" id="authRemember" style="width:auto;"> Remember me</label></div>
+      <p id="authError" style="display:none;color:var(--danger);font-size:13px;margin:-6px 0 10px;"></p>
+      <button class="btn btn-primary" style="width:100%;margin-top:6px;" type="submit" id="authSubmitBtn">Log in</button>
+    </form>
+  </div>
+</div>
+
+<script src="/js/api.js"></script>
+<script src="assets/js/site-common.js"></script>
+<script src="assets/js/cookie-consent.js"></script>
+</body>
+</html>
