@@ -17,14 +17,8 @@ const connectDB = require('./config/db');
 const errorHandler = require('./middleware/error');
 const AppError = require('./utils/AppError');
 const { stripeWebhook } = require('./controllers/paymentController');
-const { expireStaleBookings } = require('./controllers/bookingController');
 
 const app = express();
-
-// ---------------------------------------------------------
-// Database
-// ---------------------------------------------------------
-connectDB();
 
 // ---------------------------------------------------------
 // Security middleware
@@ -49,6 +43,19 @@ app.use(
 );
 app.use(cors({ origin: process.env.CLIENT_URL || true, credentials: true }));
 app.set('trust proxy', 1);
+
+// ---------------------------------------------------------
+// Database — ensure the (cached) connection is established before any /api
+// request is handled. Critical on serverless (Vercel), where the module can
+// run on a fresh cold start with no connection yet; connectDB() returns the
+// same cached promise on every warm invocation, so this resolves instantly
+// after the first request.
+// ---------------------------------------------------------
+app.use('/api', (req, res, next) => {
+  connectDB()
+    .then(() => next())
+    .catch(() => next(new AppError('Database connection failed. Please try again shortly.', 500)));
+});
 
 const globalLimiter = rateLimit({
   windowMs: (Number(process.env.RATE_LIMIT_WINDOW_MINUTES) || 15) * 60 * 1000,
@@ -112,24 +119,30 @@ app.get('*', (req, res, next) => {
 app.use(errorHandler);
 
 // ---------------------------------------------------------
-// Background job: expire stale (unpaid) bookings every minute
+// Stale (unpaid) bookings are now expired lazily — see expireStaleBookings()
+// calls inside bookingController.js (createBooking / getAllBookings) — plus
+// a daily backup cleanup via the CRON_SECRET-protected route wired in
+// bookingRoutes.js + the Vercel Cron entry in vercel.json. A setInterval
+// here would not survive serverless cold starts/restarts, so it's gone.
 // ---------------------------------------------------------
-setInterval(() => {
-  expireStaleBookings().catch((err) => console.error('expireStaleBookings failed:', err.message));
-}, 60 * 1000);
 
 // ---------------------------------------------------------
-// Start server
+// Start server — only when actually running as a long-lived process
+// (local dev, or a traditional host like Render). On Vercel the exported
+// `app` is invoked per-request by the platform, so app.listen() must not
+// run there (Vercel sets VERCEL=1 in its build/runtime environment).
 // ---------------------------------------------------------
-const PORT = process.env.PORT || 5000;
-const server = app.listen(PORT, () => {
-  console.log(`WorkX API running in ${process.env.NODE_ENV || 'development'} mode on port ${PORT}`);
-});
+if (!process.env.VERCEL) {
+  const PORT = process.env.PORT || 5000;
+  const server = app.listen(PORT, () => {
+    console.log(`WorkX API running in ${process.env.NODE_ENV || 'development'} mode on port ${PORT}`);
+  });
 
-// Safety net for unhandled promise rejections (e.g. a bad DB query outside try/catch)
-process.on('unhandledRejection', (err) => {
-  console.error('UNHANDLED REJECTION! Shutting down...', err.name, err.message);
-  server.close(() => process.exit(1));
-});
+  // Safety net for unhandled promise rejections (e.g. a bad DB query outside try/catch)
+  process.on('unhandledRejection', (err) => {
+    console.error('UNHANDLED REJECTION! Shutting down...', err.name, err.message);
+    server.close(() => process.exit(1));
+  });
+}
 
 module.exports = app;

@@ -2,6 +2,7 @@ const catchAsync = require('../utils/catchAsync');
 const AppError = require('../utils/AppError');
 const Workspace = require('../models/Workspace');
 const Seat = require('../models/Seat');
+const { uploadFileToBlob } = require('../middleware/upload');
 
 // @desc    Get all workspaces (public) — supports search & filters
 // @route   GET /api/workspaces?city=&type=&minPrice=&maxPrice=&capacity=&search=
@@ -75,7 +76,7 @@ exports.createWorkspace = catchAsync(async (req, res, next) => {
   if (typeof body.amenities === 'string') body.amenities = body.amenities.split(',').map((a) => a.trim());
 
   if (req.files && req.files.length > 0) {
-    body.images = req.files.map((f) => `/uploads/workspaces/${f.filename}`);
+    body.images = await Promise.all(req.files.map((f) => uploadFileToBlob(f, 'workspaces')));
   }
 
   const workspace = await Workspace.create(body);
@@ -103,7 +104,7 @@ exports.updateWorkspace = catchAsync(async (req, res, next) => {
   if (typeof body.amenities === 'string') body.amenities = body.amenities.split(',').map((a) => a.trim());
 
   if (req.files && req.files.length > 0) {
-    body.images = req.files.map((f) => `/uploads/workspaces/${f.filename}`);
+    body.images = await Promise.all(req.files.map((f) => uploadFileToBlob(f, 'workspaces')));
   }
 
   const workspace = await Workspace.findByIdAndUpdate(req.params.id, body, {

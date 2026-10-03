@@ -19,6 +19,10 @@ exports.createBooking = catchAsync(async (req, res, next) => {
     return next(new AppError('workspaceId, seatIds, date, and timeSlot are required.', 400));
   }
 
+  // Lazily expire any stale pending bookings first (no setInterval on serverless —
+  // see server.js), so holds that timed out are freed before we check availability.
+  await exports.expireStaleBookings();
+
   const workspace = await Workspace.findById(workspaceId);
   if (!workspace) return next(new AppError('Workspace not found.', 404));
 
@@ -175,6 +179,10 @@ exports.rescheduleBooking = catchAsync(async (req, res, next) => {
 // @desc    List all bookings (admin) with filters
 // @route   GET /api/bookings
 exports.getAllBookings = catchAsync(async (req, res) => {
+  // Lazily expire stale pending bookings so the admin list reflects reality
+  // even if the daily cron cleanup hasn't run yet.
+  await exports.expireStaleBookings();
+
   const { status, city, from, to, page = 1, limit = 20 } = req.query;
   const filter = {};
   if (status) filter.status = status;
@@ -195,9 +203,10 @@ exports.getAllBookings = catchAsync(async (req, res) => {
 });
 
 /**
- * Background job: expires stale "pending" bookings whose hold window passed
- * without payment, freeing the associated seats. Call this on an interval
- * from server.js (setInterval) or wire it to a proper cron/queue in production.
+ * Expires stale "pending" bookings whose hold window passed without payment,
+ * freeing the associated seats. Called lazily from createBooking/getAllBookings
+ * above (no setInterval on serverless), plus once a day as a backup via the
+ * CRON_SECRET-protected route below + the Vercel Cron entry in vercel.json.
  */
 exports.expireStaleBookings = async () => {
   const stale = await Booking.find({ status: 'pending', holdExpiresAt: { $lt: new Date() } });
@@ -214,4 +223,13 @@ exports.expireStaleBookings = async () => {
   }
 
   if (stale.length > 0) console.log(`Expired ${stale.length} stale booking(s).`);
+  return stale.length;
 };
+
+// @desc    Daily backup cleanup of stale bookings (Vercel Cron also hits this)
+// @route   GET /api/bookings/cron/cleanup-expired
+// @access  CRON_SECRET only — not a logged-in user route
+exports.cleanupExpiredBookings = catchAsync(async (req, res) => {
+  const expiredCount = await exports.expireStaleBookings();
+  res.status(200).json({ success: true, message: `Cleanup complete. ${expiredCount} booking(s) expired.` });
+});

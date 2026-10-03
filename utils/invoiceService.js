@@ -2,7 +2,7 @@ const Invoice = require('../models/Invoice');
 const generateInvoicePDF = require('./generateInvoicePDF');
 const sendEmail = require('./sendEmail');
 const { bookingConfirmationTemplate } = require('./emailTemplates');
-const path = require('path');
+const { uploadToBlob } = require('./blobStorage');
 
 let invoiceCounter = Date.now() % 1000000; // simple in-memory fallback; swap for a DB counter collection in high-concurrency prod
 
@@ -35,14 +35,15 @@ const createAndSendInvoice = async (booking, user, workspace) => {
     total: booking.total,
   };
 
-  const { relativePath, qrData } = await generateInvoicePDF(invoiceData);
+  const { pdfBuffer, qrData } = await generateInvoicePDF(invoiceData);
+  const pdfUrl = await uploadToBlob(`invoices/${invoiceNumber}.pdf`, pdfBuffer, 'application/pdf');
 
   const invoice = await Invoice.create({
     invoiceNumber,
     booking: booking._id,
     user: user._id,
     ...invoiceData,
-    pdfPath: relativePath,
+    pdfPath: pdfUrl,
     qrCodeData: qrData,
   });
 
@@ -61,7 +62,7 @@ const createAndSendInvoice = async (booking, user, workspace) => {
         seats: booking.seats.map((s) => s.seatNumber).join(', '),
         total: booking.total,
       }),
-      attachments: [{ filename: `${invoice.invoiceNumber}.pdf`, path: path.join(__dirname, '..', relativePath) }],
+      attachments: [{ filename: `${invoice.invoiceNumber}.pdf`, content: pdfBuffer }],
     });
     invoice.emailedAt = new Date();
     await invoice.save();

@@ -1,22 +1,15 @@
 const PDFDocument = require('pdfkit');
 const QRCode = require('qrcode');
-const fs = require('fs');
-const path = require('path');
 
 /**
- * Generates a professional PDF invoice and saves it to /uploads/invoices/<invoiceNumber>.pdf
- * Returns the relative path (for storage in the Invoice document) and the QR code data string.
+ * Generates a professional PDF invoice entirely in memory (no local disk
+ * writes — Vercel's filesystem isn't persistent) and returns it as a Buffer,
+ * ready to be uploaded to Vercel Blob or attached to an email directly.
+ * Also returns the QR code data string.
  *
  * @param {Object} data - invoice fields (see Invoice model)
  */
 const generateInvoicePDF = async (data) => {
-  const invoicesDir = path.join(__dirname, '..', 'uploads', 'invoices');
-  if (!fs.existsSync(invoicesDir)) fs.mkdirSync(invoicesDir, { recursive: true });
-
-  const fileName = `${data.invoiceNumber}.pdf`;
-  const filePath = path.join(invoicesDir, fileName);
-  const relativePath = `uploads/invoices/${fileName}`;
-
   const qrData = JSON.stringify({
     invoice: data.invoiceNumber,
     booking: data.bookingId,
@@ -25,10 +18,12 @@ const generateInvoicePDF = async (data) => {
   const qrImageDataUrl = await QRCode.toDataURL(qrData);
   const qrImageBuffer = Buffer.from(qrImageDataUrl.split(',')[1], 'base64');
 
-  await new Promise((resolve, reject) => {
+  const pdfBuffer = await new Promise((resolve, reject) => {
     const doc = new PDFDocument({ size: 'A4', margin: 50 });
-    const stream = fs.createWriteStream(filePath);
-    doc.pipe(stream);
+    const chunks = [];
+    doc.on('data', (chunk) => chunks.push(chunk));
+    doc.on('end', () => resolve(Buffer.concat(chunks)));
+    doc.on('error', reject);
 
     // ---- Header ----
     doc.fillColor('#0B0C0A').fontSize(22).font('Helvetica-Bold').text('Work', { continued: true });
@@ -97,11 +92,9 @@ const generateInvoicePDF = async (data) => {
     );
 
     doc.end();
-    stream.on('finish', resolve);
-    stream.on('error', reject);
   });
 
-  return { relativePath, qrData };
+  return { pdfBuffer, qrData };
 };
 
 module.exports = generateInvoicePDF;

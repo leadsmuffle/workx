@@ -3,6 +3,7 @@ const AppError = require('../utils/AppError');
 const User = require('../models/User');
 const Booking = require('../models/Booking');
 const Invoice = require('../models/Invoice');
+const { uploadFileToBlob } = require('../middleware/upload');
 
 // @desc    Get logged-in user's profile
 // @route   GET /api/users/profile
@@ -32,10 +33,10 @@ exports.updateProfile = catchAsync(async (req, res, next) => {
 exports.uploadProfilePicture = catchAsync(async (req, res, next) => {
   if (!req.file) return next(new AppError('Please upload an image file.', 400));
 
-  const relativePath = `/uploads/profiles/${req.file.filename}`;
+  const url = await uploadFileToBlob(req.file, 'profiles');
   const user = await User.findByIdAndUpdate(
     req.user._id,
-    { profilePicture: relativePath },
+    { profilePicture: url },
     { new: true }
   );
 
