@@ -73,12 +73,43 @@ exports.bookingCancellationTemplate = (name, bookingId) =>
     `<p style="color:#333;line-height:1.6;">Hi ${name}, your booking <strong>${bookingId}</strong> has been cancelled as requested. If eligible, any refund will be processed within 5-7 business days.</p>`
   );
 
-exports.contactAdminTemplate = (contact) =>
-  wrapper(
-    `New contact message`,
+// Renders every field a lead submission actually has — core fields first, then
+// any form-specific extras (company, size, requirement, property details, etc.)
+// — so no submitted information is dropped from the notification email,
+// regardless of which on-site form it came from.
+const escapeHtml = (val) =>
+  String(val ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+
+const row = (label, value) =>
+  value === undefined || value === null || value === ''
+    ? ''
+    : `<tr><td style="padding:6px 10px 6px 0;color:#6B7069;white-space:nowrap;vertical-align:top;">${escapeHtml(label)}</td><td style="padding:6px 0;">${escapeHtml(value)}</td></tr>`;
+
+// Turns a camelCase/snake_case field key into a readable label, e.g. "propertyType" -> "Property Type"
+const labelize = (key) =>
+  key
+    .replace(/([a-z])([A-Z])/g, '$1 $2')
+    .replace(/_/g, ' ')
+    .replace(/\b\w/g, (c) => c.toUpperCase());
+
+exports.contactAdminTemplate = (contact) => {
+  const extraRows = contact.extra
+    ? Object.entries(contact.extra)
+        .map(([key, value]) => row(labelize(key), value))
+        .join('')
+    : '';
+
+  return wrapper(
+    `New WorkX website lead`,
     `<table style="width:100%;border-collapse:collapse;">
-       <tr><td style="padding:6px 0;color:#6B7069;">Name</td><td>${contact.firstName} ${contact.lastName}</td></tr>
-       <tr><td style="padding:6px 0;color:#6B7069;">Email</td><td>${contact.email}</td></tr>
-       <tr><td style="padding:6px 0;color:#6B7069;">Message</td><td>${contact.message}</td></tr>
+       ${row('Form', contact.formName)}
+       ${row('Name', `${contact.firstName || ''} ${contact.lastName || ''}`.trim())}
+       ${row('Email', contact.email)}
+       ${row('Phone', contact.phone)}
+       ${extraRows}
+       ${row('Message', contact.message)}
+       ${row('Page URL', contact.pageUrl)}
+       ${row('Submitted', new Date(contact.createdAt || Date.now()).toLocaleString('en-PK', { dateStyle: 'medium', timeStyle: 'short' }))}
      </table>`
   );
+};

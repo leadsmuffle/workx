@@ -225,70 +225,140 @@ document.getElementById('authForm').addEventListener('submit', async (e)=>{
   }
 });
 
-// ---------- Enquire Now / Contact form ----------
-const contactForm = document.getElementById('contactForm');
-if (contactForm) {
-  const contactStatusEl = document.getElementById('contactFormStatus');
-  const contactSubmitBtn = document.getElementById('contactSubmitBtn');
-  const contactSubmitLabel = contactSubmitBtn.textContent;
-  let contactSubmitting = false;
+// ---------- Shared lead-form submission handler ----------
+// Used by every on-site inquiry form (Hero Enquiry, Contact, Landlord Property
+// Submission) so the loading/duplicate-guard/success/error behavior lives in
+// one place instead of being copy-pasted per form. `buildPayload(data)` maps
+// that form's own fields to the shared {firstName,lastName,email,phone,message,extra}
+// shape, or throws an Error with a user-facing validation message.
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const PHONE_RE = /^[0-9+()\-.\s]{7,20}$/;
 
-  function setContactStatus(kind, msg) {
-    contactStatusEl.className = 'form-status show ' + kind;
-    contactStatusEl.textContent = msg;
-  }
-  function clearContactStatus() {
-    contactStatusEl.className = 'form-status';
-    contactStatusEl.textContent = '';
+function wireLeadForm(form, buildPayload) {
+  if (!form) return;
+  const statusEl = form.querySelector('.form-status');
+  const submitBtn = form.querySelector('button[type="submit"]');
+  if (!statusEl || !submitBtn) return;
+  const submitLabel = submitBtn.textContent;
+  let submitting = false;
+
+  function setStatus(kind, msg) {
+    statusEl.className = 'form-status show ' + kind;
+    statusEl.textContent = msg;
   }
 
-  contactForm.addEventListener('submit', async (e) => {
+  form.addEventListener('submit', async (e) => {
     e.preventDefault();
-    if (contactSubmitting) return; // guard against duplicate/double submissions
+    if (submitting) return; // guard against duplicate/double submissions
 
-    const data = new FormData(contactForm);
-    const name = (data.get('name') || '').trim();
-    const company = (data.get('company') || '').trim();
-    const email = (data.get('email') || '').trim();
-    const phone = (data.get('phone') || '').trim();
-    const size = data.get('size') || '';
-    const requirement = data.get('requirement') || '';
+    const data = new FormData(form);
 
-    // Required-field validation
-    if (!name || !company || !email || !size || !requirement) {
-      setContactStatus('error', 'Please fill in all required fields.');
-      return;
-    }
-    const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-    if (!emailOk) {
-      setContactStatus('error', 'Please enter a valid email address.');
+    // Honeypot: a hidden field real visitors never fill in. If it has a
+    // value, a bot filled the form — silently drop without hitting the API.
+    if ((data.get('website') || '').trim()) {
+      form.reset();
       return;
     }
 
-    const [firstName, ...rest] = name.split(' ');
-    const lastName = rest.join(' ') || firstName;
-    const message = `Company: ${company}\nCompany size: ${size}\nRequirement: ${requirement}`;
+    let payload;
+    try {
+      payload = buildPayload(data);
+    } catch (err) {
+      setStatus('error', err.message);
+      return;
+    }
+    payload.formName = form.dataset.formName || 'Contact Form';
+    payload.pageUrl = window.location.href;
 
-    contactSubmitting = true;
-    contactSubmitBtn.disabled = true;
-    contactSubmitBtn.textContent = 'Sending…';
-    setContactStatus('loading', 'Sending your enquiry…');
+    submitting = true;
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Sending…';
+    setStatus('loading', 'Sending your enquiry…');
 
     try {
-      const payload = { firstName, lastName, email, message };
-      if (phone) payload.phone = phone;
       await WorkXAPI.submitContact(payload);
-      setContactStatus('success', 'Thanks! We will get back to you shortly.');
-      contactForm.reset();
+      setStatus('success', 'Thank you. Your inquiry has been submitted successfully. Our team will contact you soon.');
+      form.reset();
     } catch (err) {
-      setContactStatus('error', err.message || 'Something went wrong, please try again.');
+      setStatus('error', err.message || 'Something went wrong, please try again.');
     } finally {
-      contactSubmitting = false;
-      contactSubmitBtn.disabled = false;
-      contactSubmitBtn.textContent = contactSubmitLabel;
+      submitting = false;
+      submitBtn.disabled = false;
+      submitBtn.textContent = submitLabel;
     }
   });
 }
+
+// Contact section form (homepage)
+wireLeadForm(document.getElementById('contactForm'), (data) => {
+  const name = (data.get('name') || '').trim();
+  const company = (data.get('company') || '').trim();
+  const email = (data.get('email') || '').trim();
+  const phone = (data.get('phone') || '').trim();
+  const size = data.get('size') || '';
+  const requirement = data.get('requirement') || '';
+
+  if (!name || !company || !email || !size || !requirement) throw new Error('Please fill in all required fields.');
+  if (!EMAIL_RE.test(email)) throw new Error('Please enter a valid email address.');
+  if (phone && !PHONE_RE.test(phone)) throw new Error('Please enter a valid phone number.');
+
+  const [firstName, ...rest] = name.split(' ');
+  const payload = {
+    firstName,
+    lastName: rest.join(' ') || firstName,
+    email,
+    message: `Company: ${company}\nCompany size: ${size}\nRequirement: ${requirement}`,
+    extra: { company, companySize: size, requirement },
+  };
+  if (phone) payload.phone = phone;
+  return payload;
+});
+
+// Hero "Enquire now" widget (homepage)
+wireLeadForm(document.getElementById('heroEnquiryForm'), (data) => {
+  const name = (data.get('name') || '').trim();
+  const company = (data.get('company') || '').trim();
+  const email = (data.get('email') || '').trim();
+  const size = data.get('size') || '';
+  const requirement = data.get('requirement') || '';
+
+  if (!name || !company || !email || !size || !requirement) throw new Error('Please fill in all required fields.');
+  if (!EMAIL_RE.test(email)) throw new Error('Please enter a valid email address.');
+
+  const [firstName, ...rest] = name.split(' ');
+  return {
+    firstName,
+    lastName: rest.join(' ') || firstName,
+    email,
+    message: `Company: ${company}\nCompany size: ${size}\nRequirement: ${requirement}`,
+    extra: { company, companySize: size, requirement },
+  };
+});
+
+// Landlord "Submit your property" form
+wireLeadForm(document.getElementById('propertyForm'), (data) => {
+  const name = (data.get('name') || '').trim();
+  const email = (data.get('email') || '').trim();
+  const phone = (data.get('phone') || '').trim();
+  const location = (data.get('location') || '').trim();
+  const size = (data.get('size') || '').trim();
+  const type = data.get('type') || '';
+  const details = (data.get('details') || '').trim();
+
+  if (!name || !email || !phone || !location || !size || !type) throw new Error('Please fill in all required fields.');
+  if (!EMAIL_RE.test(email)) throw new Error('Please enter a valid email address.');
+  if (!PHONE_RE.test(phone)) throw new Error('Please enter a valid phone number.');
+
+  const [firstName, ...rest] = name.split(' ');
+  return {
+    firstName,
+    lastName: rest.join(' ') || firstName,
+    email,
+    phone,
+    message: details || '(no additional details provided)',
+    extra: { propertyLocation: location, approximateSize: size, propertyType: type },
+  };
+});
 
 // ---------- Floating WhatsApp button (site-wide, injected here so no page markup is duplicated) ----------
 (() => {

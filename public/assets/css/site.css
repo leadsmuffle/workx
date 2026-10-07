@@ -434,6 +434,7 @@ header.scrolled{padding:10px 0;box-shadow:0 8px 24px -16px rgba(15,23,42,.15);}
 
 /* Ecosystem sub-pages: Solutions / Landlords / Blogs */
 .eco-page-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;}
+@media(min-width:701px){.eco-page-grid.eco-page-grid-3col{grid-template-columns:repeat(3,1fr);}}
 @media(max-width:700px){.eco-page-grid{grid-template-columns:1fr;}}
 .eco-page-card{background:#fff;border:1px solid var(--border);border-radius:var(--radius-lg);padding:30px;}
 .eco-page-card h4{font-family:var(--font-display);font-weight:800;font-size:18px;margin-bottom:14px;color:var(--dark);}
@@ -497,6 +498,11 @@ header.scrolled{padding:10px 0;box-shadow:0 8px 24px -16px rgba(15,23,42,.15);}
 .contact-form .wfield{margin-bottom:16px;}
 .contact-form textarea{width:100%;padding:12px 14px;border-radius:var(--radius-sm);border:1.5px solid var(--border);font-family:var(--font-body);resize:vertical;min-height:110px;}
 .form-status{display:none;font-size:13.5px;line-height:1.5;padding:10px 14px;border-radius:var(--radius-sm);margin-bottom:14px;}
+/* Honeypot spam-trap field: present in the DOM for bots to find and fill in,
+   but invisible and unreachable for real visitors (clipped to 0 size, not
+   display:none, since some bots skip fields hidden that way). Positioned
+   in-flow with zero footprint, so it can never introduce page overflow/scroll. */
+.hp-field{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;opacity:0;pointer-events:none;}
 .form-status.show{display:block;}
 .form-status.success{background:rgba(0,158,74,.08);color:var(--green-dark);border:1px solid rgba(0,158,74,.25);}
 .form-status.error{background:rgba(220,38,38,.08);color:var(--danger);border:1px solid rgba(220,38,38,.25);}
@@ -540,6 +546,8 @@ footer{background:var(--ink);color:#fff;padding:80px 0 32px;}
 .foot-grid{display:grid;grid-template-columns:1.3fr .8fr .8fr .8fr 1fr;gap:32px;margin-bottom:56px;}
 @media(max-width:1000px){.foot-grid{grid-template-columns:1fr 1fr 1fr;}}
 @media(max-width:800px){.foot-grid{grid-template-columns:1fr 1fr;}}
+@media(max-width:560px){.foot-grid{grid-template-columns:1fr;}}
+.foot-col{min-width:0;}
 .foot-brand .logo img{height:15px;}
 .foot-brand p{color:rgba(255,255,255,.55);font-size:14px;line-height:1.6;margin:16px 0 22px;max-width:280px;}
 .foot-col h5{font-family:var(--font-util);font-size:13px;text-transform:uppercase;letter-spacing:.08em;color:rgba(255,255,255,.4);margin-bottom:18px;}

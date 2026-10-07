@@ -245,7 +245,8 @@
     </div>
     <div class="contact-grid reveal">
       <div class="contact-form">
-        <form id="propertyForm">
+        <form id="propertyForm" data-form-name="Landlord Property Submission">
+          <input type="text" name="website" class="hp-field" tabindex="-1" autocomplete="off" aria-hidden="true">
           <div class="form-row">
             <div class="wfield"><label>Full name</label><input type="text" name="name" placeholder="Your name" required></div>
             <div class="wfield"><label>Email</label><input type="email" name="email" placeholder="you@company.com" required></div>
@@ -272,6 +273,7 @@
             <label>Additional details</label>
             <textarea name="details" placeholder="Number of floors, current condition, tenancy status, or anything else we should know"></textarea>
           </div>
+          <div class="form-status" role="status" aria-live="polite"></div>
           <button class="btn btn-primary" style="width:100%" type="submit">Submit property</button>
         </form>
       </div>
