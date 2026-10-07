@@ -88,7 +88,9 @@ if (process.env.NODE_ENV === 'development') app.use(morgan('dev'));
 // Static files (uploaded images, invoices, and the frontend build)
 // ---------------------------------------------------------
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
-app.use(express.static(path.join(__dirname, 'public')));
+// extensions:['html'] lets clean URLs like /about resolve to public/about.html
+// directly (frontend links no longer include .html — see each page's nav/footer).
+app.use(express.static(path.join(__dirname, 'public'), { extensions: ['html'] }));
 
 // ---------------------------------------------------------
 // API Routes

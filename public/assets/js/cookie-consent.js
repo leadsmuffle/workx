@@ -66,7 +66,7 @@
           <div class="cookie-banner-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="9" cy="10" r="1" fill="currentColor" stroke="none"/><circle cx="14" cy="13" r="1" fill="currentColor" stroke="none"/><circle cx="10.5" cy="15.5" r="1" fill="currentColor" stroke="none"/><path d="M15.5 8.5a1 1 0 1 0 0-2 1 1 0 0 0 0 2Z" fill="currentColor" stroke="none"/></svg></div>
           <div class="cookie-banner-text">
             <h4>We value your privacy</h4>
-            <p>WorkX uses cookies, including Google Analytics, for website analytics to understand how our site is used and improve it. Essential cookies are always on. Read our <a href="privacy-policy.html">Privacy Policy</a> for details.</p>
+            <p>WorkX uses cookies, including Google Analytics, for website analytics to understand how our site is used and improve it. Essential cookies are always on. Read our <a href="/privacy-policy">Privacy Policy</a> for details.</p>
           </div>
           <div class="cookie-banner-actions">
             <button type="button" class="btn btn-outline btn-sm" id="cookieBtnSettings">Cookie Settings</button>
