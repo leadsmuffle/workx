@@ -5,10 +5,11 @@ const sendEmail = require('../utils/sendEmail');
 const { contactAdminTemplate } = require('../utils/emailTemplates');
 
 // Every lead/inquiry form on the site (Hero Enquiry, Contact, Landlord Property
-// Submission) sends here and lands in this inbox. Falls back to a hardcoded
-// default if ADMIN_EMAIL is ever missing/misconfigured in production, since
-// losing leads silently is worse than a wrong destination address.
-const LEAD_EMAIL = process.env.ADMIN_EMAIL || 'Hr@workx.pk';
+// Submission) sends here and lands in this inbox. Accepts either ADMIN_EMAIL
+// (this project's original name) or MAIL_TO (a common alternate some hosting
+// panels suggest), falling back to a hardcoded default if neither is set,
+// since losing leads silently is worse than a wrong destination address.
+const LEAD_EMAIL = process.env.ADMIN_EMAIL || process.env.MAIL_TO || 'Hr@workx.pk';
 
 // @desc    Submit any on-site lead/inquiry form (saves to DB + emails the team)
 // @route   POST /api/contact
@@ -38,11 +39,21 @@ exports.submitContact = catchAsync(async (req, res, next) => {
   });
 
   const leadName = `${firstName || ''} ${lastName || ''}`.trim() || contact.formName;
-  await sendEmail({
-    to: LEAD_EMAIL,
-    subject: `New WorkX Website Lead - ${leadName}`,
-    html: contactAdminTemplate(contact),
-  }).catch((err) => console.error('Failed to email the team about a new lead:', err.message));
+
+  try {
+    await sendEmail({
+      to: LEAD_EMAIL,
+      subject: `New WorkX Website Lead - ${leadName}`,
+      html: contactAdminTemplate(contact),
+    });
+  } catch (err) {
+    // The lead is already saved above, so it isn't lost — but the team was
+    // NOT notified, so the visitor must be told it failed rather than shown
+    // a false success (this previously always returned success even when
+    // the email silently failed to send).
+    console.error('Failed to email the team about a new lead:', err.message);
+    return next(new AppError('We could not send your inquiry right now. Please try again shortly or reach us on WhatsApp.', 502));
+  }
 
   res.status(201).json({ success: true, message: 'Thanks! We will get back to you shortly.' });
 });
