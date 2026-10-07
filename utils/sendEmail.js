@@ -7,7 +7,18 @@ const nodemailer = require('nodemailer');
 const SMTP_USER = process.env.SMTP_EMAIL || process.env.SMTP_USER;
 const SMTP_PASS = process.env.SMTP_PASSWORD || process.env.SMTP_PASS;
 const SMTP_SECURE = process.env.SMTP_SECURE !== undefined ? process.env.SMTP_SECURE === 'true' : true;
-const MAIL_FROM = process.env.EMAIL_FROM || process.env.MAIL_FROM;
+
+// Most SMTP providers (Hostinger included) reject a send if the "From" email
+// address doesn't match the authenticated mailbox (SMTP_USER) — e.g. logging
+// in as hr@workx.pk but sending "From: no-reply@workx.pk" gets a 553 "Sender
+// address rejected: not owned by user" error. So: take only the DISPLAY NAME
+// from EMAIL_FROM/MAIL_FROM if one was provided (e.g. "WorkX" out of
+// '"WorkX" <no-reply@workx.pk>'), but always force the actual address to be
+// SMTP_USER, which is guaranteed to be the account that's actually allowed to send.
+const rawMailFrom = process.env.EMAIL_FROM || process.env.MAIL_FROM || '';
+const displayNameMatch = rawMailFrom.match(/^\s*"?([^"<]*?)"?\s*<.+>\s*$/);
+const FROM_DISPLAY_NAME = (displayNameMatch ? displayNameMatch[1].trim() : '') || 'WorkX';
+const MAIL_FROM = `"${FROM_DISPLAY_NAME}" <${SMTP_USER}>`;
 
 /**
  * Creates a reusable Nodemailer transporter.
@@ -37,7 +48,7 @@ const sendEmail = async ({ to, subject, html, attachments = [] }) => {
   const transporter = createTransporter();
 
   await transporter.sendMail({
-    from: MAIL_FROM || `"WorkX" <${SMTP_USER}>`,
+    from: MAIL_FROM,
     to,
     subject,
     html,
