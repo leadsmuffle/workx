@@ -561,14 +561,10 @@ footer{background:var(--ink);color:#fff;padding:80px 0 32px;}
 .foot-col h5{font-family:var(--font-util);font-size:13px;text-transform:uppercase;letter-spacing:.08em;color:rgba(255,255,255,.4);margin-bottom:18px;}
 .foot-col ul{list-style:none;}
 .foot-col li{margin-bottom:12px;}
-.foot-col a{color:rgba(255,255,255,.75);font-size:14.5px;transition:color .2s;display:inline-flex;align-items:flex-start;gap:8px;}
+.foot-col a{color:rgba(255,255,255,.75);font-size:13.5px;transition:color .2s;display:inline-flex;align-items:flex-start;gap:8px;}
 .foot-col a:hover{color:var(--green);}
 .foot-col a svg{width:15px;height:15px;flex-shrink:0;margin-top:2px;color:rgba(255,255,255,.45);transition:color .2s;}
 .foot-col a:hover svg{color:var(--green);}
-/* Location address only (step 1 of fitting it to exactly 2 lines): 1px smaller
-   than the shared .foot-col a size (14.5px), same font/color/line-height.
-   Selector needs to match/exceed .foot-col a's specificity to actually apply. */
-.foot-col a.foot-address{font-size:12.5px;}
 .newsletter{display:flex;gap:8px;margin-top:6px;}
 .newsletter input{flex:1;padding:12px 14px;border-radius:var(--radius-sm);border:1px solid rgba(255,255,255,.15);background:rgba(255,255,255,.06);color:#fff;font-size:13.5px;}
 .newsletter input::placeholder{color:rgba(255,255,255,.4);}
