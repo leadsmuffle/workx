@@ -546,7 +546,12 @@ header.scrolled{padding:10px 0;box-shadow:0 8px 24px -16px rgba(15,23,42,.15);}
 
 /* Footer */
 footer{background:var(--ink);color:#fff;padding:80px 0 32px;}
-.foot-grid{display:grid;grid-template-columns:1.3fr .8fr .8fr .8fr 1fr;gap:32px;margin-bottom:56px;}
+/* Step 3 of fitting the Location address to 2 lines: swapped the Brand and
+   Location fr-shares (1.3fr/1fr -> 1fr/1.3fr). Total stays 4.7fr, so Company/
+   Quick Links/Support (each .8fr) are pixel-for-pixel unchanged; only Brand
+   (which has a flexible newsletter input, not fixed text) gives up width to
+   Location. */
+.foot-grid{display:grid;grid-template-columns:1fr .8fr .8fr .8fr 1.3fr;gap:32px;margin-bottom:56px;}
 @media(max-width:1000px){.foot-grid{grid-template-columns:1fr 1fr 1fr;}}
 @media(max-width:800px){.foot-grid{grid-template-columns:1fr 1fr;}}
 @media(max-width:560px){.foot-grid{grid-template-columns:1fr;}}
@@ -560,6 +565,10 @@ footer{background:var(--ink);color:#fff;padding:80px 0 32px;}
 .foot-col a:hover{color:var(--green);}
 .foot-col a svg{width:15px;height:15px;flex-shrink:0;margin-top:2px;color:rgba(255,255,255,.45);transition:color .2s;}
 .foot-col a:hover svg{color:var(--green);}
+/* Location address only (step 1 of fitting it to exactly 2 lines): 1px smaller
+   than the shared .foot-col a size (14.5px), same font/color/line-height.
+   Selector needs to match/exceed .foot-col a's specificity to actually apply. */
+.foot-col a.foot-address{font-size:12.5px;}
 .newsletter{display:flex;gap:8px;margin-top:6px;}
 .newsletter input{flex:1;padding:12px 14px;border-radius:var(--radius-sm);border:1px solid rgba(255,255,255,.15);background:rgba(255,255,255,.06);color:#fff;font-size:13.5px;}
 .newsletter input::placeholder{color:rgba(255,255,255,.4);}
